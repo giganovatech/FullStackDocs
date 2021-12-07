@@ -1,0 +1,191 @@
+====================================================================================================
+QUICK START
+====================================================================================================
+# Verion
+st2 --version
+
+# Help
+st2 -h
+
+# Login
+st2 login st2admin -p 'Ch@ngeMe'
+
+# Display the authentication token
+st2 auth st2admin -p 'Ch@ngeMe'
+
+# List the actions from the 'core' pack
+st2 action list --pack=core
+st2 trigger list
+st2 rule list
+
+# Run a local shell command
+st2 run core.local -- date -R
+
+# See the execution results
+st2 execution list
+
+# Run a shell command on remote hosts. Requires passwordless SSH configured.
+st2 run core.remote hosts='localhost' -- uname -a
+
+# List all the actions in the library
+st2 action list
+
+# Get action metadata
+st2 action get core.http
+
+# Display action details and parameters.
+st2 run core.http --help
+
+# Run a local command
+st2 run <action> key=value
+st2 run core.local -- uname -a
+
+# HTTP REST call to st2 action endpoint
+st2 run -j core.http url="https://docs.stackstorm.com" method="GET"
+
+# Use the core.remote action to run Linux commands on multiple hosts via SSH. This assumes that passwordless SSH access is configured for the hosts, as described in the Configure SSH section.
+st2 run core.remote hosts='abc.example.com, cde.example.com' username='mysshuser' -- ls -l
+
+# Using `--` to separate arguments
+st2 run core.local -- ls -al
+
+# Equivalent using `cmd` parameter
+st2 run core.local cmd="ls -al"
+
+# Crazily complex command passed with `cmd`
+st2 run core.remote hosts='localhost' cmd="for u in bob phill luke; do echo \"Logins by \$u per day:\"; grep \$u /var/log/secure | grep opened | awk '{print \$1 \"-\" \$2}' | uniq -c | sort; done;"
+Check the action execution history and details of action executions with the st2 execution command:
+
+# List of executions (most recent at the bottom)
+st2 execution list
+
+# Get execution by ID
+st2 execution get <execution_id>
+
+# Get only the last 5 executions
+st2 execution list -n 5
+
+# List all available triggers
+st2 trigger list
+
+# Check details on Interval Timer trigger
+st2 trigger get core.st2.IntervalTimer
+
+# Check details on the Webhook trigger
+st2 trigger get core.st2.webhook
+
+# Create the rule
+st2 rule create /usr/share/doc/st2/examples/rules/sample_rule_with_webhook.yaml
+
+# List the rules
+st2 rule list
+
+# List the rules for the examples pack
+st2 rule list --pack=examples
+
+# Get the rule that was just created
+st2 rule get examples.sample_rule_with_webhook
+Once the rule is created, the webhook begins to listen on https://{host}/api/v1/webhooks/{url}. Fire the POST, check out /home/stanley/st2.webhook_sample.out, and see that it appends the payload to the file.
+
+# Obtain authentication token
+st2 auth st2admin -p 'Ch@ngeMe'
+
+# Post to the webhook
+curl -k https://localhost/api/v1/webhooks/sample -d '{"foo": "bar", "name": "st2"}' -H 'Content-Type: application/json' -H 'X-Auth-Token: put_token_here'
+
+# Check if the action was executed (this shows the last action)
+st2 execution list -n 1
+
+# Check that the rule worked. By default, st2 runs as the stanley user.
+sudo tail /home/stanley/st2.webhook_sample.out
+
+# And for fun, same post with st2
+st2 run core.http method=POST body='{"you": "too", "name": "st2"}' url=https://localhost/api/v1/webhooks/sample headers='x-auth-token=put_token_here,content-type=application/json' verify_ssl_cert=False
+
+# And for even more fun, using basic authentication over https
+st2 run core.http url=https://httpbin.org/basic-auth/st2/pwd username=st2 password=pwd
+
+# Check that the rule worked. By default, st2 runs as the stanley user.
+sudo tail /home/stanley/st2.webhook_sample.out
+Congratulations, your first StackStorm rule is up and running!
+
+Deploy Examples
+Examples of rules, custom sensors, actions, and workflows are installed with StackStorm and located at /usr/share/doc/st2/examples. To deploy, copy them to /opt/stackstorm/packs/, setup, and reload the content:
+
+# Copy examples to st2 content directory and set permissions
+sudo cp -r /usr/share/doc/st2/examples/ /opt/stackstorm/packs/
+sudo chown -R root:st2packs /opt/stackstorm/packs/examples
+sudo chmod -R g+w /opt/stackstorm/packs/examples
+
+# Run setup
+st2 run packs.setup_virtualenv packs=examples
+
+# Reload stackstorm context
+st2ctl reload --register-all
+For more content — actions, sensors, rules — check out the StackStorm Exchange.
+
+Datastore
+While most data are retrieved as needed by StackStorm, you may need to store and share some common variables. Use the StackStorm datastore service to store the values and reference them in rules and workflows as {{st2kv.system.my_parameter}}.
+
+This creates user=stanley key-value pair:
+
+# Create a new key value pair
+st2 key set user stanley
+
+# List the key value pairs in the datastore
+st2 key list
+For more information on the datastore, check Datastore
+
+
+====================================================================================================
+STACKSTORM FLOW
+====================================================================================================
+StackStorm uses rules to run actions or workflows when events happen. Events are typically monitored by sensors. When a sensor catches an event, it fires a trigger. Trigger trips the rule, the rule checks the criteria and if it matches, it runs an action. Easy enough.
+
+Event => Sensor => Trigger => Rule => Action/Workflow
+
+Sensors are a way to integrate external systems and events with StackStorm. Sensors are pieces of Python code that either periodically poll some external system, or passively wait for inbound events. They then inject triggers into StackStorm, which can be matched by rules, for potential action execution.
+
+Triggers are StackStorm constructs that identify the incoming events to StackStorm. A trigger is a tuple of type (string) and optional parameters (object). Rules are written to work with triggers. Sensors typically register triggers though this is not strictly required. For example, there is a generic webhooks trigger registered with StackStorm, which does not require a custom sensor.
+
+StackStorm uses rules and workflows to capture operational patterns as automations. Rules map triggers to actions (or workflows), apply matching criteria and map trigger payloads to action inputs.
+
+Actions are pieces of code that can perform arbitrary automation or remediation tasks in your environment. They can be written in any programming language.
+
+====================================================================================================
+ACTIONS
+====================================================================================================
+# List commands
+	st2 action --help
+# List actions
+	st2 action list
+#List past action executions
+	st2 execution list -n 5
+# Output info about a specific execution
+	st2 execution get id (gives a text/yaml style display)
+	-or-
+	st2 execution get id -d (gives a more readable table style display)
+	-or-
+	st2 execution get id -j (gives a json style display)
+	ex: st2 execution get 5452ed4e0640fd6b59e75908 -j
+Output list of a specific action's executions
+	st2 execution list --action ${action_reference} -n 10
+
+====================================================================================================
+RULES
+====================================================================================================
+# Rules locations
+	/opt/stackstorm/packs/<pack_name>/rules
+# Create rule
+	st2 rule create ${PATH_TO_RULE}
+	ex: st2 rule create /usr/share/doc/st2/examples/rules/sample_rule_with_webhook.yaml
+# Reload all rules
+	st2ctl reload --register-rules
+# Update rule after editing it
+	st2 rule update pack.name_of_rule ${PATH_TO_RULE}
+	ex: st2 rule update examples.sample_rule_with_webhook /usr/share/doc/st2/examples/rules/sample_rule_with_webhook.yaml
+# See all rules
+	st2 rule list
+# See individual rule details
+	st2 rule get pack.rule_name
+	ex: st2 rule get examples.sample_rule_with_webhook
