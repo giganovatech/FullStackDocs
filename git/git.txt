@@ -1,0 +1,11 @@
+#test ssh key/connection
+ssh -T git@github.com
+
+#set connection to remote repo to ssh
+git remote set-url origin git@github.com:giganovatech/TipsAndTricks.git
+
+#pull repo
+git pull
+
+#push repo
+git push origin main
