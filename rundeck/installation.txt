@@ -1,0 +1,46 @@
+#RunDeck needs the Java virtual machine to work. So, the first step is to install the Java virtual machine:
+sudo yum install java
+
+#Download the RunDeck rpm here:
+https://www.rundeck.com/community-downloads
+
+#Install RunDeck:
+sudo yum install rundeck-3.4.6.20211110-1.noarch.rpm -y
+
+#Start the Rundeck service:
+sudo systemctl start rundeckd
+
+#Check the Rundeck service status:
+sudo systemctl status rundeckd
+
+#Set the service to run at system boot:
+sudo systemctl enable rundeckd
+
+#Set up ability to access the Rundeck instance using the hostname and from any network location
+==================================
+#Open this file, /etc/rundeck/rundeck-config.properties, and change the default web hostname by commenting out this line:
+grails.serverURL=http://localhost:4440
+
+#add this line: 
+grails.serverURL=http://your-rundeck-hostname:4440
+
+#Open the /etc/rundeck/framework.properties file and comment out these lines:
+framework.server.name = localhost
+framework.server.hostname = localhost
+framework.server.url = http://localhost:4440
+
+#...then add these lines:
+framework.server.name = your-rundeck-hostname
+framework.server.hostname = your-rundeck-hostname
+framework.server.url = http://your-rundeck-hostname:4440
+
+#...then restart RunDeck:
+systemctl restart rundeckd
+==================================
+
+#Rundeck takes a few minutes to start, and we can check the service log file for indication
+tail -f /var/log/rundeck/service.log
+
+#If the following line is seen the server has started:
+Grails application running at http://localhost:4440 in environment: production
+

@@ -1,0 +1,33 @@
+#Install the yum-utils package (which provides the yum-config-manager utility):
+yum install -y yum-utils
+
+#Set up the stable repository:
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+
+#Install the latest version of Docker Engine and containerd:
+yum install docker-ce docker-ce-cli containerd.io
+
+#Tell docker to startup every time you boot into the host:
+systemctl start docker
+
+#Start docker:
+systemctl start docker
+
+#Create a systemd drop-in directory for the docker service to use the AT&T proxy:
+mkdir -p /etc/systemd/system/docker.service.d
+
+#Create a file named /etc/systemd/system/docker.service.d/http-proxy.conf that adds the HTTP_PROXY environment variable:
+[Service]
+Environment="HTTP_PROXY=http://10.199.89.100:8080"
+Environment="HTTPS_PROXY=http://10.199.89.100:8080"
+
+#Flush changes and restart Docker:
+systemctl daemon-reload 
+systemctl restart docker
+
+#Verify that the configuration has been loaded and matches the changes:
+systemctl show --property=Environment docker
+
+#Verify that Docker Engine is installed correctly by running the hello-world image.
+docker run hello-world
