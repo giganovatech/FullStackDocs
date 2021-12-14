@@ -1,4 +1,4 @@
-Keep airflow scheduler running even after terminal is closed:
-  nohup airflow scheduler >> ${AIRFLOW_HOME}/logs/scheduler.log 2>&1 &
-    -or-
-  nohup airflow scheduler > /dev/null 2>&1 &
+#Keep airflow scheduler running even after terminal is closed:
+nohup airflow scheduler >> ${AIRFLOW_HOME}/logs/scheduler.log 2>&1 &
+  -or-
+nohup airflow scheduler > /dev/null 2>&1 &
