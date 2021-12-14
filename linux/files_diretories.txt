@@ -1,0 +1,24 @@
+#show file properties
+ls -lath
+
+#remove all files and directories recursively
+rm -rf directory_name
+
+#delete all files inside a directory
+rm *
+
+#examples to grep for text in a file
+grep -inr 'gg1563' *.pl
+grep -inr 'kf0375' /mnt/Shared/Scripts/*.pl 
+grep -inr 'cu6271@att.com' /mnt/nas_001_www/*
+
+#print only matching lines to screen
+cat ~/100000.txt | grep -i '107.246.92.100'
+
+#create a symlink
+ln -s <SOURCE> <LINK_NAME>
+ln -s /path/to/file /path/to/symlink
+
+#get just the pid from ps ie for killing rampant processes
+ps aux | pgrep -f python
+

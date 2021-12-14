@@ -1,0 +1,14 @@
+#reboot machine
+shutdown -r now
+-or-
+reboot
+
+#to find applicable routes in router
+netstat -rn | grep -i 192.168.1.27
+
+#delete routes in router
+route delete -net 10.212.249.0
+route delete -host 10.212.249.102
+
+#get difference between two files
+diff --suppress-common-lines ~/dec32.walk.log ~/dec32.walk.log.2

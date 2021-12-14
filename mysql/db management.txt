@@ -63,3 +63,9 @@ select ID, left(USER,10) as USER, HOST, DB, COMMAND, TIME, left(STATE,30) as STA
 #check health of database cluster
 select * from performance_schema.replication_group_members;
 
+#create mysql database backup
+/usr/local/bin/mysqldump --databases db_xframejs -u root -p -h 192.168.1.14 > ~/db_xframejs.sql
+
+#restart mysql
+?
+

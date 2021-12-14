@@ -1,0 +1,21 @@
+####################################################################################################
+Update packages
+####################################################################################################
+
+https://docs.oracle.com/cd/E37670_01/E37355/html/ol_creating_yum_repo.html
+
+cat /etc/redhat-release
+yum clean all
+yum check-update
+yum update
+
+#yum edit config (if necessary)
+vi /etc/yum.conf
+
+#yum edit repo list (if necessary)
+  vi /etc/yum.repos.d/CentOS-Base.repo
+  
+###check file path permissions (if necessary)
+namei -m /var/www/html
+
+####################################################################################################

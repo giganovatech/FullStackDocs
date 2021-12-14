@@ -1,0 +1,5 @@
+#list crontab of current user
+crontab -l
+
+#list crontab of another user
+crontab -l -u <user>

@@ -1,0 +1,22 @@
+#snmpwalk (get all snmp variables from remote machine)
+/usr/local/bin/snmpwalk -v2c -r1 -t3 -c public -Cc -Cp -Ct -On 76.201.236.18 1.3.6.1.4.1
+
+#snmpget (get snmp variable from remote machine)
+/usr/local/bin/snmpget -v2c -r1 -t3 -c public 172.16.1.41 .1.3.6.1.2.1.1.5.0
+
+#snmpset (set snmp variable on remote machine)
+/usr/local/bin/snmpset -v2c -r1 -t3 -c private 172.16.1.41 .1.3.6.1.2.1.1.5.0 s 'VATF EM'
+
+#snmptrap
+/usr/local/bin/snmptrap -v2c -r1 -t3 -c public udp:192.168.1.58 "" SNMPv2-MIB::snmpTrapOID 1.3.6.1.4.1.12345.2.1.0 s "Tell them I'll be here."
+*or*
+/usr/local/bin/snmptrap -v2c -r1 -t3 -c public tcp:192.168.1.58 "" SNMPv2-MIB::snmpTrapOID 1.3.6.1.4.1.12345.2.1.0 s "What am I doing here?"
+
+#print out received snmp as they come in on the fly
+tail -f /var/log/snmptrapd.log
+
+#pull specific data from snmptrapd log as it comes in
+tail -f /var/log/snmptrapd.log | grep -i '12345'
+
+#put last 100000 lines of snmptrapd.log into txt file
+tail -n 100000 /var/log/snmptrapd.log > ~/snmptrapdlog.txt

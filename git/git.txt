@@ -14,10 +14,14 @@ git pull
 git status
 
 #adds a change in the working directory to the staging area
-git add
+git add .
+-or-
+git add *
+-or-
+git add --all
 
 #captures a snapshot of the project's currently staged changes
-git commit
+git commit -m 'describe changes made here'
 
 #upload local repository content to a remote repository
 git push origin main

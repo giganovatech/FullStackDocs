@@ -1,0 +1,6 @@
+#To create or update a symlink
+ln -sf file1 link1
+ln -sf file_to_link_to link_to_file
+ln -sf /mnt/nas_001_Shared/Scripts/Python/Modules /mnt/nas_001_Shared/Scripts/Devlist/Modules
+ln -sf /mnt/nas_002_Shared/Scripts/Python/Modules /mnt/nas_002_Shared/Scripts/Devlist/Modules
+ln -sf /mnt/nas_001_www/js /mnt/nas_001_www/Evertz/js
