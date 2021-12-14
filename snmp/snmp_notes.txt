@@ -1,3 +1,6 @@
+#install net-snmp tools:
+yum install net-snmp-utils net-snmp-devel net-snmp
+
 #snmpwalk (get all snmp variables from remote machine)
 /usr/local/bin/snmpwalk -v2c -r1 -t3 -c public -Cc -Cp -Ct -On 76.201.236.18 1.3.6.1.4.1
 
@@ -20,3 +23,28 @@ tail -f /var/log/snmptrapd.log | grep -i '12345'
 
 #put last 100000 lines of snmptrapd.log into txt file
 tail -n 100000 /var/log/snmptrapd.log > ~/snmptrapdlog.txt
+
+####################################################################################################
+SET UP TRAP HANDLER
+####################################################################################################
+
+#don't think this part is actually necessary but did it anyways:
+systemctl stop snmpd.service
+net-snmp-create-v3-user -ro -A test123authPass -a SHA -X test123encPass -x AES user1
+systemctl start snmpd.service
+
+
+#edit /etc/sysconfig/snmptrapd file by adding this line and then restart the daemon and service:
+OPTIONS="-Lsd -Lf /var/log/snmptrapd.log"
+systemctl daemon-reload
+systemctl restart snmptrapd.service
+
+
+#add this line to /etc/snmp/snmptrap.conf:
+disableAuthorization yes
+
+
+#view incoming traps:
+tail -f /var/log/snmptrapd.log
+
+####################################################################################################
