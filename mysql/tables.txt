@@ -1,0 +1,59 @@
+#displays tables in a database
+SHOW TABLES
+
+#displays table structure
+DESCRIBE table_name
+
+#create database
+create database DBname
+
+#create table
+CREATE TABLE table_name (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, column_name1 CHAR(30) NOT NULL, column_name2 JSON DEFAULT NULL);
+CREATE TABLE table_name (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `created` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updated` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), column_name1 CHAR(30) NOT NULL, column_name2 JSON DEFAULT NULL);
+
+#displays query that would be used to create your existing table from scratch
+SHOW CREATE TABLE table_name
+
+#empty table
+TRUNCATE TABLE table_name
+
+/*create a backup of a database table
+#creates new table using the exact same structure as another table
+CREATE TABLE new_table LIKE original_table
+#inserts all of the data from the original table into the backup
+INSERT new_table SELECT * FROM original_table
+*/
+
+#delete an existing table
+DROP TABLE table_name
+
+#change a table's name
+RENAME TABLE first TO second
+
+#add a column to a table after another specific column
+ALTER TABLE table_name ADD column_name1 CHAR(60) AFTER column_name2
+
+#change an table's existing column's structure
+ALTER TABLE table_name CHANGE column_name column_name CHAR(16) NOT NULL
+
+#add a unique index/key to a table column
+ALTER TABLE table_name ADD UNIQUE (column_name)
+
+#add index/key
+CREATE INDEX [index name] ON [table name]([column name]);
+ALTER TABLE table_name ADD INDEX ( column_name );
+
+#removes an index/key from a table column such as unique or primary using the name of the index
+ALTER TABLE table_name DROP INDEX index_name
+
+#add primary key
+ALTER TABLE table_name ADD PRIMARY KEY(key_name)
+
+#drop primary key
+ALTER TABLE table_name DROP PRIMARY KEY
+
+#change a column name
+ALTER TABLE table_name CHANGE original_name new_name CHAR(10)
+
+#drop a column name
+ALTER TABLE table_name DROP column_name

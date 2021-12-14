@@ -1,0 +1,15 @@
+#how to connect to mysql via command line
+mysql -u username -p password -h host
+
+MISC NOTES
+An important difference is that DATETIME represents a date (as found in a calendar) and a time (as can be observed on a wall clock), while TIMESTAMP represents a well defined point in time.
+
+In MySQL 5 and above, TIMESTAMP values are converted from the current time zone to UTC for storage, and converted back from UTC to the current time zone for retrieval. (This occurs only for the TIMESTAMP data type, and not for other types such as DATETIME.) By default, the current time zone for each connection is the server's time. The time zone can be set on a per-connection basis.
+
+The DATETIME type is used when you need values that contain both date and time information. MySQL retrieves and displays DATETIME values in 'YYYY-MM-DD HH:MM:SS' format. The supported range is '1000-01-01 00:00:00' to '9999-12-31 23:59:59'. The TIMESTAMP data type has a range of '1970-01-01 00:00:01' UTC to '2038-01-09 03:14:07' UTC. It has varying properties, depending on the MySQL version and the SQL mode the server is running in.
+
+explain query
+
+select * from sys.`statements_with_full_table_scans` 
+
+select distinct timestamp, convert_tz(from_unixtime(timestamp), 'GMT', 'America/Chicago') from conviva_data_hist_5m;

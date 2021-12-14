@@ -1,0 +1,9 @@
+#json extract
+select TrapID,TimeStamp,LastUpdatedTimeStamp,StatusCode,StatusMessage,TicketNumber,TicketStatus,Source,JSON_EXTRACT(OrchestratorJSON, '$.Ticket.API.IncidentSummary') as Incident_Summary from ICT.OpenTickets where Flow='ProductionFlow' and TimeStamp > '2018-03-06 11:30:00' and Source!='CBUS' and Source!='DBOSS EBond (Prod)' and Source!='Email Reader' and StatusMessage!='Finished Thresholding';
+
+#cast to float
+CAST(value AS DECIMAL(12,2)) 
+
+#cast to int
+CAST(value AS SIGNED)
+CAST(value as UNSIGNED)

@@ -1,0 +1,38 @@
+#display records where a data set is met
+SELECT * FROM table_name WHERE column_name='value'
+
+#insert a new record
+INSERT INTO table_name (column1, column2, column3) values ('value1', 'value2', 'value3')
+
+#inserts three records at once
+INSERT INTO table_name (col1, col2, col3) VALUES ('col1_a', 'col2_a', 'col3_a'), ('col1_b', 'col2_b', 'col3_b'), ('col1_c', 'col2_c', 'col3_c')
+
+#insert...select
+INSERT INTO tbl_temp2 (fld_id)
+  SELECT tbl_temp1.fld_order_id
+  FROM tbl_temp1 WHERE tbl_temp1.fld_order_id > 100;
+
+#update an existing record
+UPDATE table_name SET column='value' WHERE column='value'
+
+#delete an existing record
+DELETE FROM table_name WHERE column='value'
+
+#like statement with substring_index statement
+	$query = "SELECT col1, col2, 
+	substring_index(`col2`,' ',1) AS var1, 
+	substring_index(substring_index(substring_index(`col2`,' ',2),' ', -1),'-',-1) AS var2, 
+	substring_index(substring_index(substring_index(substring_index(`col2`,' ',2),' ', -1),'-',2),'-',-1) AS var3, 
+	substring_index(substring_index(`col2`,'address=',-1),' ',1) AS var4 
+	FROM table_name WHERE col1 = '@row' && ((col2 not like ';%' && (col2 like '%HDTC%' OR col2 like '%SDTC%' OR col2 like '%ENHD%' OR col2 like '%ENSD%' OR col2 		like '%RX%')))
+	ORDER BY col1, col2 LIMIT 100"
+  
+#find duplicates
+SELECT asset_id FROM INGEST_INVENTORY_ORPHANS GROUP BY asset_id HAVING COUNT(asset_id) > 1;
+SELECT EventID, Program, Channel, Start, count(Start) as Count FROM SB_Events GROUP BY Channel, Start HAVING COUNT(Start) > 1;
+
+#find items in 1st table that are not in 2nd table
+select * from table1 where asset_id not in (select table1.asset_id from table1 join table2 using(asset_id)) \G
+
+#left join
+select T.Source, T.TimeStamp, T.TrapID, T.ServiceID, T.Description, T.`Condition`, S.CallLetters, S.ChannelNumber from ICT_Archive.Traps_2016_10 T left join ICT.Services S on T.ServiceID=S.ServiceID where T.Source='DMACS CONUS' && T.`Condition`='Critical' order by T.TimeStamp desc limit 1;

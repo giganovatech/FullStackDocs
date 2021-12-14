@@ -1,0 +1,65 @@
+#backup database
+/usr/local/bin/mysqldump --lock-tables=false --databases {DBName} -u root -p -h 192.168.1.19 > ./backup.sql
+mysqldump -u app_user -p -h newrelic-analytics.cmp95eyb2qml.us-west-2.rds.amazonaws.com monvis conviva_filters
+mysqldump -u cu6271 -p -h 192.168.1.12 monvis conviva_filters
+mysql -u root -p -h 192.168.1.12 < ./backup.sql
+#to backup
+mysqldump -u root -p -h 192.168.1.13 --databases Monvis > ~/Monvis.sql 
+#then to restore
+mysql -u root -p -h 192.168.1.12 < ~/Monvis.sql
+
+#move uneven data from one table to another (tables have different sizes, data types, etc)
+insert into NewRelic_Data_Daily (Since, Until, RunDate, Alias, Data) select Since, Until, Date, Alias, Data from BoyerDB_Daily;
+
+#increase mysql connection timeout to five minutes
+con.query('SET GLOBAL connect_timeout=300')
+con.query('SET GLOBAL wait_timeout=300')
+con.query('SET GLOBAL interactive_timeout=300')
+
+#show running process
+select * from information_schema.processlist where command!='sleep' AND USER!='cu6271'\G
+
+#shows number of open connections
+SHOW STATUS WHERE `variable_name` = 'Threads_connected';
+
+#shows all open connections with more details
+show processlist;
+
+#check mysql errors
+tail -f -n 100 /var/db/mysql/DT2014-DBS-004.att.com.err
+
+#optimize tables
+first check fragmentation:
+    select table_name,
+    round(data_length/1024/1024) as data_length_mb, 
+    round(data_free/1024/1024) as data_free_mb 
+     from information_schema.tables 
+     where table_schema = "Runlog"
+     order by data_free_mb;
+#optimize any tables where data_free_mb > 500 MB`
+optimize table table_name
+
+#Get size of one Database Table
+SELECT table_name AS `Table`, round(((data_length + index_length) / 1024 / 1024 / 1024), 2) `Size in GB` FROM information_schema.TABLES WHERE table_schema = "ICT" AND table_name = "Traps";
+SELECT table_name AS `Table`, round(((data_length + index_length) / 1024 / 1024), 2) `Size in MB` FROM information_schema.TABLES WHERE table_schema = "MotoLogs_Archive";
+
+#Get size of all tables in a database
+SELECT table_name AS `Table`, round(((data_length + index_length) / 1024 / 1024 / 1024), 2) `Size in GB` FROM information_schema.TABLES WHERE table_schema = "MotoLogs_Archive";
+SELECT table_name AS `Table`, round(((data_length + index_length) / 1024 / 1024), 2) `Size in MB` FROM information_schema.TABLES WHERE table_schema = "MotoLogs_Archive";
+
+#Get size of all Databases together
+select table_schema, sum((data_length+index_length)/1024/1024/1024) AS `Size in GB` from information_schema.tables;
+
+#get size of all Databases individually
+SELECT table_schema "DB Name", ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) "DB Size in MB" FROM information_schema.tables GROUP BY table_schema;
+
+#kill multiple open processes
+SELECT *,concat('kill ',id,';') as command FROM information_schema.processlist where DB='GoldStandards' and info like 'select lt.ip%';
+SELECT concat('kill ',id,';') as command FROM information_schema.processlist where DB='GoldStandards' and info like 'select lt.ip%';
+
+#show active mysql processes
+select ID, left(USER,10) as USER, HOST, DB, COMMAND, TIME, left(STATE,30) as STATE, left(INFO,100) as INFO from information_schema.processlist WHERE Command!='Sleep' order by Time desc;
+
+#check health of database cluster
+select * from performance_schema.replication_group_members;
+
