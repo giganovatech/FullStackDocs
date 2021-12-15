@@ -4,7 +4,7 @@ git init
 #test ssh key/connection
 ssh -T git@github.com
 
-#lets you create, view, and delete connections to other repositories, in this case set connection to remote repo via ssh
+#git remote lets you create, view, delete connections to other repos, in this case set connection to remote repo via ssh
 git remote set-url origin git@github.com:giganovatech/FullStackDocs.git
 
 #fetch and download content from a remote repository and immediately update the local repository to match that content
