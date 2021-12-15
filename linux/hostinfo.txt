@@ -1,0 +1,8 @@
+#get expanded machine info
+hostnamectl
+
+#get os version
+cat os-release
+-or-
+cat /etc/system-release
+
