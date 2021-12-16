@@ -6,3 +6,6 @@ cat os-release
 -or-
 cat /etc/system-release
 
+#get host info
+uname -a
+

@@ -1,0 +1,6 @@
+#free disk space
+df -h
+
+#used disk space
+du
+
