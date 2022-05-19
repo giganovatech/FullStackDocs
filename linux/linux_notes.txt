@@ -12,3 +12,6 @@ route delete -host 10.212.249.102
 
 #get difference between two files
 diff --suppress-common-lines ~/dec32.walk.log ~/dec32.walk.log.2
+
+#how to tell if a system requires rebooting after updates
+cat /var/run/reboot-required
