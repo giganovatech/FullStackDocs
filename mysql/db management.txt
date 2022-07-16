@@ -1,3 +1,12 @@
+#connect to database
+mysql -u giganova -p -h localhost
+mysql -u giganova -p -h 192.168.2.203
+
+
+#check if mysql is running on ubuntu
+systemctl status mysql command
+
+
 #backup database
 /usr/local/bin/mysqldump --lock-tables=false --databases {DBName} -u root -p -h 192.168.1.19 > ./backup.sql
 mysqldump -u app_user -p -h newrelic-analytics.cmp95eyb2qml.us-west-2.rds.amazonaws.com monvis conviva_filters
