@@ -1,0 +1,8 @@
+#To setup a connection through a tunnel in WinSCP:
+    first set up a session as if you were connecting directly to the remote device
+    click the Advanced button to open the Advanced Site Settings dialog
+    then go to the Connection > Tunnel page
+    check Connect through SSH tunnel
+    in the Host name specify a host to tunnel through, toolbox.ks.us.att.com
+    in the User name specify an account for the tunnel host
+

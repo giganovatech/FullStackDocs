@@ -1,0 +1,14 @@
+#Install OpenSSH
+sudo apt install openssh-client -y
+
+#Generate SSH keys
+#Enter file in which to save the key (/home/ubuntu/.ssh/id_rsa):
+#To use the default filename, press ENTER and proceed.
+#In the next part, enter a passphrase to secure your key pairs. You can skip this by pressing ENTER.
+#$  Enter passphrase (empty for no passphrase):
+#$  Enter same passphrase again:
+#Executing this will complete your SSH key pair creation, and you can use it to log in to SSH.
+ssh-keygen -t rsa -b 4096
+
+#Copy the public half of the key pair to your cloud server using the following command
+ssh-copy-id -i ~/.ssh/id_rsa.pub user@server

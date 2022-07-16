@@ -1,0 +1,17 @@
+#edit your ~/.bashrc
+nano ~/.bashrc
+
+#after changes are made use this command to make them take effect
+source ~/.bashrc
+
+#improved ll
+alias ll='ls -lah $1'
+
+#clear screen and scrollback
+#try this first:
+alias cls="clear"
+#or if that doesn't work try this:
+alias cls='clear && printf "\e[3J"'
+
+#check running processes
+alias psg='ps aux | grep -i $1'
