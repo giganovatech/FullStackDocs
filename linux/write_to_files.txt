@@ -90,3 +90,6 @@ Redirect stdout and stderr to file:
     
 //send script to background and send output to /dev/null instead of to screen
 /usr/local/bin/python2 /mnt/Shared/Scripts/Monvis/NewRelic/Exporter/NewRelicExporter_v0-r9.py 'cron' 'MakStabilityReport' 'n/a' > /dev/null &
+
+#disconnect script from terminal so if terminal closes script still runs and run it in background and redirect output to file
+nohup python3 /home/shared/scripts/USASS_scripts/usssa/usssa_getGameCenterContent.py debug all all 2022-08-01 2022-08-31 > /home/shared/files/SSC/usssa_getGameCenterContent_08-22.log 2>&1 &

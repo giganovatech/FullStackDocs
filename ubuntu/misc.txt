@@ -1,0 +1,2 @@
+#check ubuntu version number
+lsb_release -a

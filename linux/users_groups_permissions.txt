@@ -3,7 +3,7 @@ USERS
 ####################################################################################################
 
 #list users
-cat /etc/paswd
+cat /etc/passwd
 
 #create user
 useradd username
