@@ -1,3 +1,6 @@
+#update packages on machine
+sudo apt update && sudo apt upgrade -y
+
 #reboot machine
 shutdown -r now
 -or-
