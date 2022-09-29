@@ -1,0 +1,54 @@
+https://learn.microsoft.com/en-us/windows/wsl/basic-commands
+https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers
+
+#Install
+wsl --install
+
+#Install a specific Linux distribution
+wsl --install --distribution <Distribution Name>
+
+#List available online Linux distributions
+wsl --list --online
+
+#List installed Linux distributions
+wsl --list --verbose
+
+#Set WSL version to 1 or 2
+wsl --set-version <distribution name> <versionNumber>
+
+#Set default WSL version
+wsl --set-default-version <Version>
+
+#Change directory to home
+wsl ~
+
+#Run a specific Linux distribution from PowerShell
+wsl --distribution <Distribution Name> --user <User Name>
+
+#Update WSL
+wsl --update
+
+#Check WSL status
+wsl --status
+
+#Help command
+wsl --help
+
+#Run as a specific user
+wsl -u <Username>`, `wsl --user <Username>
+
+#Immediately terminates all running distributions and the WSL 2 lightweight utility virtual machine.
+wsl --shutdown
+
+#To terminate the specified distribution, or stop it from running, replace <Distribution Name> with the name of the targeted distribution.
+wsl --terminate <Distribution Name>
+
+#Export a distribution to a TAR file
+wsl --export <Distribution Name> <FileName>
+
+#Import a new distribution
+wsl --import <Distribution Name> <InstallLocation> <FileName>
+
+#Unregister or uninstall a Linux distribution
+wsl --unregister <DistributionName>
+
