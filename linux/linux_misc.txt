@@ -1,5 +1,5 @@
-#update packages on machine
-sudo apt update && sudo apt upgrade -y
+#update packages on machine && upgrade machine && check if machine needs to be rebooted
+sudo apt  update && sudo apt upgrade -y && cat /var/run/reboot-required
 
 #reboot machine
 shutdown -r now
@@ -16,5 +16,3 @@ route delete -host 10.212.249.102
 #get difference between two files
 diff --suppress-common-lines ~/dec32.walk.log ~/dec32.walk.log.2
 
-#how to tell if a system requires rebooting after updates
-cat /var/run/reboot-required
