@@ -1,0 +1,5 @@
+#view all failed ssh login attempts for last couple of days
+cat /var/log/auth.log | grep "Failed password"
+
+#view all failed ssh login attempts since system turnup
+journalctl _SYSTEMD_UNIT=ssh.service | egrep "Failed|Failure" 
