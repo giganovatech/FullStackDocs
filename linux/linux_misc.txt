@@ -1,5 +1,5 @@
 #update packages on machine && upgrade machine && check if machine needs to be rebooted
-sudo apt  update && sudo apt upgrade -y && cat /var/run/reboot-required
+sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && cat /var/run/reboot-required
 
 #reboot machine
 shutdown -r now
