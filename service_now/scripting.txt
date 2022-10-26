@@ -1,0 +1,22 @@
+
+#‘Get’ Query Shortcut (used to get a single GlideRecord)
+gr.get(sys_id_of_record_here);
+gr.get('column_name', data_to_search);
+
+#Query, returns multiple records
+var gr = new GlideRecord('incident'); //Indicate the table to query from
+//The 'addQuery' line allows you to restrict the query to the field/value pairs specified (optional)
+//gr.addQuery('active', true);
+gr.query(); //Execute the query
+while (gr.next()) { //While the recordset contains records, iterate through them
+//Do something with the records returned
+if(gr.category == 'software'){
+gs.log('Category is ' + gr.category);
+}
+}
+
+#print number of records returned
+gs.info('[MK Config Tracker - Update CMDB MPEG4 Signature ~ Action][query][ver' + debug_ver + '] Rows returned: ' + gr.getRowCount());
+
+#print returned record in log
+gs.info('[MK Config Tracker - Update CMDB MPEG4 Signature ~ Action][query][ver' + debug_ver + '] gr after updates' + JSON.stringify(gr));
