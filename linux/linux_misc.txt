@@ -16,3 +16,9 @@ route delete -host 10.212.249.102
 #get difference between two files
 diff --suppress-common-lines ~/dec32.walk.log ~/dec32.walk.log.2
 
+#create symbolic link
+ln -s my_file.txt my_link.txt
+
+Copy a Local File to a Remote System with the scp Command
+scp file.txt remote_username@10.10.0.2:/remote/directory
+scp service_now_conn_params.ini dcu6271@stcdevpr-crbc01.ds.dtvops.net:/home/shared/scripts/service_now/service_now_conn_params.ini

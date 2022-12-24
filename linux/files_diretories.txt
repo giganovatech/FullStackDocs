@@ -22,3 +22,14 @@ ln -s /path/to/file /path/to/symlink
 #get just the pid from ps ie for killing rampant processes
 ps aux | pgrep -f python
 
+#change permissions for directories only
+find /path/to/location -type d -print0 |xargs -0 chmod 755
+find ./ -type d -print0 |xargs -0 chmod 775
+
+#change permissions for files only
+find /path/to/location -type f -print0|xargs -0 chmod 766
+find ./ -type f -print0|xargs -0 chmod 776
+
+#combined
+find ./ -type d -print0 |xargs -0 chmod 775
+find ./ -type f -print0|xargs -0 chmod 776

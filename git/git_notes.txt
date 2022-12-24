@@ -26,3 +26,5 @@ git commit -m 'describe changes made here'
 #upload local repository content to a remote repository
 git push origin main
 
+#clone a repository
+git clone https://egbitbucket.dtvops.net/scm/ops/mediakind-api-scripts.git

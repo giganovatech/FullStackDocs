@@ -5,7 +5,7 @@ nano ~/.bashrc
 source ~/.bashrc
 
 #improved ll
-alias ll='ls -lah $1'
+alias ll='ls -lah $1 --group-directories-first'
 
 #clear screen and scrollback
 #try this first:
