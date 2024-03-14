@@ -1,0 +1,17 @@
+https://stackoverflow.com/questions/62216398/how-to-completely-uninstall-rundeck
+
+DEB-based (Debian, Ubuntu, Mint) instance:
+
+Shutdown the Rundeck service: # systemctl stop rundeckd
+Make sure that the process is down doing # systemctl status rundeckd
+Remove the package, do # apt purge rundeck
+Some files keep on the system, check and wipe the following paths: /etc/rundeck, /var/lib/rundeck and /var/log/rundeck.
+Reinstall following this.
+
+
+sudo systemctl stop rundeckd
+sudo systemctl status rundeckd
+sudo apt-get purge rundeckd
+sudo rm -rf /etc/rundeck
+sudo rm -rf /var/lib/rundeck
+sudo rm -rf /var/log/rundeck

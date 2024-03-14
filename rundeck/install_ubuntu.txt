@@ -1,0 +1,8 @@
+apt-get install openjdk-8-jdk-headless
+dpkg -i rundeck_4.17.4.20231216-1_all.deb
+
+sudo dpkg -i rundeck_5.1.0-20240214-1_all.deb
+
+sudo apt-get install rundeck=5.1.0.20240214-1
+
+sudo apt-get install rundeck=5.0.0.20231216-1
