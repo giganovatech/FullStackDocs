@@ -1,0 +1,49 @@
+# Tutorials
+https://www.redhat.com/sysadmin/container-information-podman
+https://docs.podman.io/en/latest/markdown/podman-run.1.html?ref=linuxhandbook.com
+https://linuxhandbook.com/podman-add-delete-containers/
+
+
+switch to dzdo su before running podman commands
+
+# List images.
+podman images
+podman image ls
+
+# List all images. (By default filter out the intermediate image layers. The default is false.)
+podman images -a
+
+# List all running containers.
+podman ps
+
+# List all the containers whether or not they are running.
+podman ps -a
+podman container list -a
+
+# Build a new image.
+podman build -f containerfile -t image_name
+
+# Create a new container, but don't run it.
+podman create image_name
+
+# Start a container.
+podman start [CONTAINER_NAME|CONTAINER_ID]
+podman start localhost/inspect_2110
+
+# Create and start a container at the same time.
+podman run image_name
+
+# Create and start create a container while exposing a port and keep it running in the background.
+(-d Detached mode: run the container in the background and print the new container ID.)
+(-t allocates a pseudo-TTY to keep the container running while in the background.)
+podman run -p internal_port:external_port -d -t image_name
+podman run -p 2110:2110 -d -t localhost/inspect_2110
+
+# Stop container.
+podman stop [CONTAINER_NAME|CONTAINER_ID]
+
+# Delete a container.
+podman rm [CONTAINER_NAME|CONTAINER_ID]
+
+# Generage systemd service file.
+podman generate systemd --name foo

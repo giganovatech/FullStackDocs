@@ -1,25 +1,172 @@
+####################################################################################################
+OID Basics
+####################################################################################################
+# Load SNMP files here
+/usr/share/snmp/mibs
+
+
+# Specify a MIB file to use like this
+
+
+
+https://www.alvestrand.no/objectid/top.html
+
+1.3.6.1 - The Internet OID.
+
+# If you walk this OID you'll get basic info about the devices.
+1.3.6.1.2.1.1 - Basic OIDs that should exist on all devices.
+snmpwalk -v2c -r1 -t3 -c public -Cc -Cp -Ct -On 10.71.44.24 .1.3.6.1.2.1.1
+.1.3.6.1.2.1.1.1.0 = STRING: CDM-7xx
+.1.3.6.1.2.1.1.2.0 = OID: .1.3.6.1.4.1.6247.26
+.1.3.6.1.2.1.1.3.0 = Timeticks: (459480519) 53 days, 4:20:05.19
+.1.3.6.1.2.1.1.4.0 = STRING: Administrator
+.1.3.6.1.2.1.1.5.0 = STRING: 720
+.1.3.6.1.2.1.1.6.0 = STRING:
+.1.3.6.1.2.1.1.7.0 = INTEGER: 72
+Variables found: 7
+Total traversal time = 0.643564 seconds
+
+# Walk without any OID and you'll get the same basic info as above plus additional info. Also notice the difference between -On and -Of.
+[dcu6271@stcdevpr-crbc01 ~]$ snmpwalk -v2c -r1 -t3 -c public -Of -Cc -Cp -Ct 10.71.44.24
+.iso.org.dod.internet.mgmt.mib-2.system.sysDescr.0 = STRING: CDM-7xx
+.iso.org.dod.internet.mgmt.mib-2.system.sysObjectID.0 = OID: .iso.org.dod.internet.private.enterprises.6247.26
+.iso.org.dod.internet.mgmt.mib-2.system.sysUpTime.sysUpTimeInstance = Timeticks: (465236645) 53 days, 20:19:26.45
+.iso.org.dod.internet.mgmt.mib-2.system.sysContact.0 = STRING: Administrator
+.iso.org.dod.internet.mgmt.mib-2.system.sysName.0 = STRING: 720
+.iso.org.dod.internet.mgmt.mib-2.system.sysLocation.0 = STRING:
+.iso.org.dod.internet.mgmt.mib-2.system.sysServices.0 = INTEGER: 72
+.iso.org.dod.internet.mgmt.mib-2.interfaces.ifNumber.0 = INTEGER: 2
+.iso.org.dod.internet.mgmt.mib-2.interfaces.ifTable.ifEntry.ifIndex.1 = INTEGER: 1
+.iso.org.dod.internet.mgmt.mib-2.interfaces.ifTable.ifEntry.ifIndex.2 = INTEGER: 2
+.iso.org.dod.internet.mgmt.mib-2.interfaces.ifTable.ifEntry.ifDescr.1 = STRING: Ethernet
+.iso.org.dod.internet.mgmt.mib-2.interfaces.ifTable.ifEntry.ifDescr.2 = STRING: Software Loopback
+.iso.org.dod.internet.mgmt.mib-2.interfaces.ifTable.ifEntry.ifType.1 = INTEGER: ethernetCsmacd(6)
+
+# If you walk this OID you should get all OIDs on the device, including the Private Enterprise Numbers (PENs) which in this cass is 6247. 
+# Find PENs: https://www.iana.org/assignments/enterprise-numbers/
+1.3.6.1.4.1 - IANA-assigned company OIDs, used for private MIBs and such things.
+[dcu6271@stcdevpr-crbc01 ~]$ snmpwalk -v2c -r1 -t3 -c public -On -Cc -Cp -Ct 10.71.44.24 1.3.6.1.4.1
+.1.3.6.1.4.1.6247.26.1.1.2.1.0 = STRING: "333333333"
+.1.3.6.1.4.1.6247.26.1.1.2.2.0 = INTEGER: 720
+.1.3.6.1.4.1.6247.26.1.1.2.3.0 = ""
+.1.3.6.1.4.1.6247.26.1.1.2.4.1.1.0 = INTEGER: 0
+.1.3.6.1.4.1.6247.26.1.1.2.4.1.1.3 = INTEGER: 3
+.1.3.6.1.4.1.6247.26.1.1.2.4.1.2.0 = INTEGER: 3
+.1.3.6.1.4.1.6247.26.1.1.2.4.1.2.3 = INTEGER: 5
+.1.3.6.1.4.1.6247.26.1.1.3.0 = INTEGER: 0
+.1.3.6.1.4.1.6247.26.1.2.1.1.0 = INTEGER: 4
+.1.3.6.1.4.1.6247.26.1.2.1.2.1.0 = INTEGER: 1
+.1.3.6.1.4.1.6247.26.1.2.1.2.2.0 = INTEGER: 0
+.1.3.6.1.4.1.6247.26.1.2.1.2.4.2.0 = INTEGER: 1
+.1.3.6.1.4.1.6247.26.1.2.1.2.5.0 = INTEGER: 9600
+.1.3.6.1.4.1.6247.26.1.2.1.2.6.0 = INTEGER: 1
+.1.3.6.1.4.1.6247.26.1.2.1.4.1.0 = IpAddress: 10.71.44.24
+.1.3.6.1.4.1.6247.26.1.2.1.4.2.0 = INTEGER: 24
+.1.3.6.1.4.1.6247.26.1.2.1.4.3.0 = IpAddress: 254.44.71.254
+.1.3.6.1.4.1.6247.26.1.2.1.4.4.0 = Hex-STRING: 00 06 B0 00 39 9F
+.1.3.6.1.4.1.6247.26.1.2.1.4.7.1.1.0 = STRING: "720"
+.1.3.6.1.4.1.6247.26.1.2.1.4.7.1.2.0 = STRING: "Administrator"
+.1.3.6.1.4.1.6247.26.1.2.1.4.7.1.3.0 = ""
+.1.3.6.1.4.1.6247.26.1.2.1.4.7.3.1.1.1 = INTEGER: 1
+.1.3.6.1.4.1.6247.26.1.2.1.4.7.3.1.1.2 = INTEGER: 2
+.1.3.6.1.4.1.6247.26.1.2.1.4.7.3.1.1.3 = INTEGER: 3
+.1.3.6.1.4.1.6247.26.1.2.1.4.7.3.1.2.1 = STRING: "public"
+.1.3.6.1.4.1.6247.26.1.2.1.4.7.3.1.2.2 = STRING: "private"
+.1.3.6.1.4.1.6247.26.1.2.1.4.7.3.1.2.3 = STRING: "comtech"
+
+
+####################################################################################################
+SNMP Flags
+####################################################################################################
+https://linux.die.net/man/1/snmpcmd
+
+-Oa => Display in ASCII strings	SNMPv2-MIB::sysDescr.0
+-Of => Display full textual path to OID	.iso.org.dod.internet.mgmt.mib-2.system.sysDescr.0
+-On => Display full numerical path to OID	.1.3.6.1.2.1.1.1.0
+-Os => Display only the end textual OID representation	sysDescr.0
+-Td => You can get a full description, complete with the path at the bottom.
+-Tp => 
+-Cc => ?
+-Cp => Number of variables found. (snmpwalk only)
+-Ct => Total traversal time. (snmpwalk only)
+-m  => /path/to/mib/file/to/use
+
+
+####################################################################################################
+General usage
+####################################################################################################
+https://www.digitalocean.com/community/tutorials/how-to-use-the-net-snmp-tool-suite-to-manage-and-monitor-servers
+
 #install net-snmp tools:
 yum install net-snmp-utils net-snmp-devel net-snmp
 
+
 #snmpwalk (get all snmp variables from remote machine)
-/usr/local/bin/snmpwalk -v2c -r1 -t3 -c public -Cc -Cp -Ct -On 76.201.236.18 1.3.6.1.4.1
+snmpwalk -v2c -r1 -t3 -c public -Cc -Cp -Ct -On 76.201.236.18 1.3.6.1.4.1
+
 
 #snmpget (get snmp variable from remote machine)
-/usr/local/bin/snmpget -v2c -r1 -t3 -c public 172.16.1.41 .1.3.6.1.2.1.1.5.0
+snmpget -v2c -r1 -t3 -c public 172.16.1.41 .1.3.6.1.2.1.1.5.0
+
 
 #snmpset (set snmp variable on remote machine)
-/usr/local/bin/snmpset -v2c -r1 -t3 -c private 172.16.1.41 .1.3.6.1.2.1.1.5.0 s 'VATF EM'
+snmpset -v2c -r1 -t3 -c private 172.16.1.41 .1.3.6.1.2.1.1.5.0 s 'VATF EM'
+
 
 #snmptrap
-/usr/local/bin/snmptrap -v2c -r1 -t3 -c public udp:192.168.1.58 "" SNMPv2-MIB::snmpTrapOID 1.3.6.1.4.1.12345.2.1.0 s "Tell them I'll be here."
+snmptrap -v2c -r1 -t3 -c public udp:192.168.1.58 "" SNMPv2-MIB::snmpTrapOID 1.3.6.1.4.1.12345.2.1.0 s "Tell them I'll be here."
 *or*
-/usr/local/bin/snmptrap -v2c -r1 -t3 -c public tcp:192.168.1.58 "" SNMPv2-MIB::snmpTrapOID 1.3.6.1.4.1.12345.2.1.0 s "What am I doing here?"
+snmptrap -v2c -r1 -t3 -c public tcp:192.168.1.58 "" SNMPv2-MIB::snmpTrapOID 1.3.6.1.4.1.12345.2.1.0 s "What am I doing here?"
+
+
+#snmptranslate 
+snmptranslate 1.3.6.1.2.1.1.1.0
+SNMPv2-MIB::sysDescr.0
+vs
+snmptranslate 1.3.6.1.2.1.1.1
+SNMPv2-MIB::sysDescr
+
+-or-
+
+snmptranslate -On SNMPv2-MIB::sysDescr.0
+.1.3.6.1.2.1.1.1.0
+
+-or-
+
+# Often times will need to add a 0 or perhaps another index number after the root OID to get what you want vs what snmptranslate returns. ie:
+snmptranslate -On CDM-7XX::cdm7xxModelNumber
+.1.3.6.1.4.1.6247.26.1.1.2.2
+
+snmpget -v2c -r1 -t3 -c public 10.71.44.24 1.3.6.1.4.1.6247.26.1.1.2.2
+SNMPv2-SMI::enterprises.6247.26.1.1.2.2 = No Such Instance currently exists at this OID
+
+snmpget -v2c -r1 -t3 -c public 10.71.44.24 1.3.6.1.4.1.6247.26.1.1.2.2.0
+SNMPv2-SMI::enterprises.6247.26.1.1.2.2.0 = INTEGER: 720
+
+
+# snmptranslate with full description flag:
+snmptranslate -Td CDM-7XX::cdm7xxModelNumber
+CDM-7XX::cdm7xxModelNumber
+cdm7xxModelNumber OBJECT-TYPE
+  -- FROM       CDM-7XX
+  SYNTAX        INTEGER {cdm700(700), cdm710(710), cdm720(720)}
+  MAX-ACCESS    read-only
+  STATUS        current
+  DESCRIPTION   "Model Number of the CDM-7xx.
+
+                                700 = CDM-700
+                                710 = CDM-710
+                                720 = CDM-720"
+::= { iso(1) org(3) dod(6) internet(1) private(4) enterprises(1) comtechEFData(6247) cdm7xx(26) cdm7xxObjects(1) cdm7xxSystem(1) cdm7xxSystemInformation(2) 2 }
+
 
 #print out received snmp as they come in on the fly
 tail -f /var/log/snmptrapd.log
 
+
 #pull specific data from snmptrapd log as it comes in
 tail -f /var/log/snmptrapd.log | grep -i '12345'
+
 
 #put last 100000 lines of snmptrapd.log into txt file
 tail -n 100000 /var/log/snmptrapd.log > ~/snmptrapdlog.txt

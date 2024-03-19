@@ -5,7 +5,7 @@ sudo apt install python3-virtualenv
 virtualenv name_of_venv
 
 #start virtual environment
-source usass_venv/bin/activate
+source name_of_venv/bin/activate
 
 stop virtual environment
 deactivate

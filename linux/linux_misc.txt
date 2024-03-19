@@ -1,24 +1,44 @@
-#update packages on machine && upgrade machine && check if machine needs to be rebooted
+# Update packages on machine && upgrade machine && check if machine needs to be rebooted.
 sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && cat /var/run/reboot-required
 
-#reboot machine
+# Reboot machine.
 shutdown -r now
 -or-
 reboot
 
-#to find applicable routes in router
+# To find applicable routes in router.
 netstat -rn | grep -i 192.168.1.27
 
-#delete routes in router
+# Delete routes in router.
 route delete -net 10.212.249.0
 route delete -host 10.212.249.102
 
-#get difference between two files
+# Check open ports on device
+netstat -tanp | grep LISTEN
+
+# Get difference between two files.
 diff --suppress-common-lines ~/dec32.walk.log ~/dec32.walk.log.2
 
-#create symbolic link
+# Create symbolic link.
 ln -s my_file.txt my_link.txt
 
-Copy a Local File to a Remote System with the scp Command
+# Copy a Local File to a Remote System with the scp Command.
 scp file.txt remote_username@10.10.0.2:/remote/directory
 scp service_now_conn_params.ini dcu6271@stcdevpr-crbc01.ds.dtvops.net:/home/shared/scripts/service_now/service_now_conn_params.ini
+
+# Find executable files.
+which -a filename
+
+# Find binary, source and manual files for the specified command names.
+whereis filename
+
+# The find program searches a directory tree to find a file or group of files. It traverses the directory tree and reports all occurrences of a file matching the user's specifications. The find program includes very powerful searching capability.
+find filename
+
+# The locate program scans one or more databases of filenames and displays any matches. This can be used as a very fast find command if the file was present during the last file name database update.
+locate filename
+
+
+
+echo $PATH
+python -c "import ssl; print(ssl.OPENSSL_VERSION)"

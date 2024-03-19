@@ -5,10 +5,10 @@ nano ~/.bashrc
 source ~/.bashrc
 
 
-# Improved ll.
+# Improved ll
 alias ll='ls -lah $1 --group-directories-first --color=auto'
 
-# Clear screen and scrollback.
+# Clear screen and scrollback:
 alias cls='clear && printf "\e[3J"'
 
 # Check running processes.

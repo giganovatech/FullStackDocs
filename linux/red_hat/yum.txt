@@ -1,0 +1,4 @@
+yum list installed
+
+yum upgrade
+

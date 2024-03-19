@@ -28,3 +28,16 @@ git push origin main
 
 #clone a repository
 git clone https://egbitbucket.dtvops.net/scm/ops/mediakind-api-scripts.git
+
+#pulls new branches from origin
+git fetch
+
+#switch branches
+git checkout branch-name
+
+#list branches
+git branch
+
+#create branch
+git branch new-branch-name
+

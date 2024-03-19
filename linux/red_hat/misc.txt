@@ -1,2 +1,6 @@
 #check version
 hostnamectl
+cat /etc/redhat-release
+
+#install package
+dzdo su

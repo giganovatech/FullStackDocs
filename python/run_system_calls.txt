@@ -1,0 +1,34 @@
+From https://stackoverflow.com/questions/89228/how-do-i-execute-a-program-or-call-a-system-command
+
+Here is a summary of ways to call external programs, including their advantages and disadvantages:
+
+os.system passes the command and arguments to your system's shell. This is nice because you can actually run multiple commands at once in this manner and set up pipes and input/output redirection. For example:
+
+os.system("some_command < input_file | another_command > output_file")  
+However, while this is convenient, you have to manually handle the escaping of shell characters such as spaces, et cetera. On the other hand, this also lets you run commands which are simply shell commands and not actually external programs.
+
+os.popen will do the same thing as os.system except that it gives you a file-like object that you can use to access standard input/output for that process. There are 3 other variants of popen that all handle the i/o slightly differently. If you pass everything as a string, then your command is passed to the shell; if you pass them as a list then you don't need to worry about escaping anything. Example:
+
+print(os.popen("ls -l").read())
+subprocess.Popen. This is intended as a replacement for os.popen, but has the downside of being slightly more complicated by virtue of being so comprehensive. For example, you'd say:
+
+print subprocess.Popen("echo Hello World", shell=True, stdout=subprocess.PIPE).stdout.read()
+instead of
+
+print os.popen("echo Hello World").read()
+but it is nice to have all of the options there in one unified class instead of 4 different popen functions. See the documentation.
+
+subprocess.call. This is basically just like the Popen class and takes all of the same arguments, but it simply waits until the command completes and gives you the return code. For example:
+
+return_code = subprocess.call("echo Hello World", shell=True)
+subprocess.run(["ls", "-l"]) 
+subprocess.run. Python 3.5+ only. Similar to the above but even more flexible and returns a CompletedProcess object when the command finishes executing.
+
+os.fork, os.exec, os.spawn are similar to their C language counterparts, but I don't recommend using them directly.
+
+The subprocess module should probably be what you use.
+
+Finally, please be aware that for all methods where you pass the final command to be executed by the shell as a string and you are responsible for escaping it. There are serious security implications if any part of the string that you pass can not be fully trusted. For example, if a user is entering some/any part of the string. If you are unsure, only use these methods with constants. To give you a hint of the implications consider this code:
+
+print subprocess.Popen("echo %s " % user_input, stdout=PIPE).stdout.read()
+and imagine that the user enters something "my mama didnt love me && rm -rf /" which could erase the whole filesystem.

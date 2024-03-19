@@ -1,0 +1,8 @@
+# Verify that the webhook is being received
+tail -f /var/log/st2/st2api.log
+
+# Verify rules engine is processing webhook
+tail -f /var/log/st2/st2rulesengine.log
+
+#trigger list
+st2 trigger-instance list

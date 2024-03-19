@@ -1,0 +1,10 @@
+# Download and open PuTTYgen.
+
+# Generate a public/private key pair on your local desktop. Click the Generate button. You will be prompted to move the mouse over the blank area to generate some randomness. Do so. Shortly thereafter, the program will generate the key and display the result.
+
+# Select all of the text in the box labeled "Public key for pasting into OpenSSH authorized_keys file" (near the top of the window) by dragging the cursor. Right-click over the selection and choose Copy. Save this key in the authorized_keys file of the server you want to connect to.
+
+# Finally, click the "Save private key" button to save the private key to a file.
+
+# You can recover the public key from the private key with PuTTYgen by clicking the Load button. You can not recover the private key from the public key however.
+

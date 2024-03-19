@@ -1,0 +1,6 @@
+# Check cpu usage.
+mpstat
+
+# Check memory usage.
+free
+

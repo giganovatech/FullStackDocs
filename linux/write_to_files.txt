@@ -93,3 +93,6 @@ Redirect stdout and stderr to file:
 
 #disconnect script from terminal so if terminal closes script still runs and run it in background and redirect output to file
 nohup python3 /home/shared/scripts/USASS_scripts/usssa/usssa_getGameCenterContent.py debug all all 2022-08-01 2022-08-31 > /home/shared/files/SSC/usssa_getGameCenterContent_08-22.log 2>&1 &
+
+# Start file in background to keep it running and send all output to dev/null
+nohup python3 /home/shared/scripts/USASS_scripts/usssa/usssa_getGameCenterContent.py debug all all 2022-08-01 2022-08-31 > /dev/null 2>&1 &

@@ -1,0 +1,18 @@
+##################################################
+# User specific aliases and functions
+##################################################
+
+# Improved ll.
+alias ll='ls -lah $1 --group-directories-first --color=auto'
+
+# Clear screen and scrollback.
+alias cls='clear && printf "\e[3J"'
+
+# Check running processes.
+alias psg='ps aux | grep -i $1'
+
+# Set proxy environment variables.
+alias set_proxy='export http_proxy=http://labc.proxy.dtvops.net:8080
+export https_proxy=http://labc.proxy.dtvops.net:8080
+export ftp_proxy=http://labc.proxy.dtvops.net:8080
+'

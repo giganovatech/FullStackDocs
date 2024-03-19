@@ -1,14 +1,15 @@
-#Install OpenSSH
+# Install OpenSSH.
 sudo apt install openssh-client -y
 
-#Generate SSH keys
-#Enter file in which to save the key (/home/ubuntu/.ssh/id_rsa):
-#To use the default filename, press ENTER and proceed.
-#In the next part, enter a passphrase to secure your key pairs. You can skip this by pressing ENTER.
-#$  Enter passphrase (empty for no passphrase):
-#$  Enter same passphrase again:
-#Executing this will complete your SSH key pair creation, and you can use it to log in to SSH.
-ssh-keygen -t rsa -b 4096
+# Generate SSH keys. The private key which is generated, id_rsa, stays on the local server you want to login from. The public key, id_rsa.pub, gets copied into the authorized_keys file on remote servers to allow you to log in as that user.
+ssh-keygen -t rsa -b 4096 -C "comments_go_here"  # In comments sections it is preferred to put user@server
 
-#Copy the public half of the key pair to your cloud server using the following command
+# Copy the public half of the key pair you created to your remote server using the following command. The contents of your ~/.ssh/id_rsa.pub key into a file in the remote account’s home ~/.ssh directory called authorized_keys.
 ssh-copy-id -i ~/.ssh/id_rsa.pub user@server
+
+# SSH with specific key file.
+ssh -i aws-iits-pem.pem ec2-user@10.108.33.68
+
+# Create a public key with a previously generated private key
+ssh-keygen -yf ~/.ssh/id_rsa
+

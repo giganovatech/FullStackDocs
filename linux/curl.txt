@@ -1,0 +1,26 @@
+# https://curl.se/docs/tutorial.html
+
+# Get the main page from a web-server.
+curl https://www.example.com/
+
+# Output response to file.
+curl -o output.html www.dataden.tech
+
+# Post data to endpoint.
+curl -X "POST" http://www.example.com -d "name=John&surname=Doe"
+
+# OAuth 2.
+curl -H "Authorization: OAuth <ACCESS_TOKEN>" http://www.example.com
+
+
+DBSLIVE-2616
+Broadcasters - ingest Client output IP from brodcasters
+Client Output IP (Output Multicast)
+Ask Charan then Gui about getting into Broadcasters
+
+curl -u admin:1234 http://10.199.147.5:4444/zixi/streams.json
+curl -u admin:1234 http://10.199.147.5:4444/zixi/outputs.json
+curl -u admin:1234 http://10.199.147.6:4444/zixi/outputs.json
+239.203.10.153:2066
+5:54
+IMD
