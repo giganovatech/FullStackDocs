@@ -1,0 +1,24 @@
+# List scheduled events.
+SHOW EVENTS;
+
+# Delete event.
+DROP EVENT event_name.
+
+
+# Create event to run everyday at midnight.
+CREATE EVENT event_name
+  ON SCHEDULE
+    EVERY 1 DAY
+  STARTS
+    CURRENT_DATE + INTERVAL 1 DAY
+  DO
+    DELETE FROM snmp_traps WHERE timestamp < NOW() - INTERVAL 1 DAY;
+
+
+CREATE EVENT prune_dcm_records
+  ON SCHEDULE
+    EVERY 1 DAY
+  STARTS
+    CURRENT_DATE + INTERVAL 1 DAY
+  DO
+    DELETE FROM snmp_traps WHERE timestamp < NOW() - INTERVAL 1 DAY;

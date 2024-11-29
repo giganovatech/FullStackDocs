@@ -1,5 +1,6 @@
-Documentation: https://service-nerd.com How to trigger a subflow from a script?
+// Documentation: https://service-nerd.com How to trigger a subflow from a script?
 
+/*
 Server side:
     FlowAPI => 
     ScriptableFlowRunner =>
@@ -17,6 +18,7 @@ Server Side: (FlowAPI is replaced by ScriptableFlowRunner)
     Asynchronous methods:
         FlowAPI: sn_fd.FlowAPI.startFlow(name, inputs)
         ScriptableFlowRunner: sn_fd.FlowAPI.getRunner().flow(name).inBackground()
+*/
 
 
 
@@ -34,5 +36,4 @@ Server Side: (FlowAPI is replaced by ScriptableFlowRunner)
 		var message = ex.getMessage();
 		gs.error(message);
 	}
-	
 })();

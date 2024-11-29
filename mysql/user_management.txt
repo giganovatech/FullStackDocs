@@ -1,4 +1,4 @@
-#create user, show users, grant priveleges, show privileges
+# Create user, show users, grant priveleges, show privileges.
 login as mysql root user
 DROP USER dcu6271;
 CREATE USER dcu6271@'%' IDENTIFIED BY 'Dr01dst34M!';
@@ -8,16 +8,16 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON tableau.* TO dcu6271;
 SELECT User, Host FROM mysql.user;
 SHOW GRANTS FOR dcu6271;
 
-#remove rights
+# Remove rights.
 revoke all privileges on monvis.* from 'tk8236'@'%'
 
-#show all users on a system
+# Show all users on a system.
 SELECT User, Host FROM mysql.user;
 
-#change password
+# Change password.
 ALTER USER 'an717e'@'%' IDENTIFIED BY 'newPass';
 
-#create superuser on clean install of mysql
+# Create superuser on clean install of mysql.
 CREATE USER 'dcu6271'@'localhost' IDENTIFIED BY 'ch@ng3m3';
 GRANT ALL PRIVILEGES ON *.* TO 'dcu6271'@'localhost' WITH GRANT OPTION;
 CREATE USER 'dcu6271'@'%' IDENTIFIED BY 'ch@ng3m3';

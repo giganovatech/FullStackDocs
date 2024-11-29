@@ -36,14 +36,17 @@ podman run image_name
 # Create and start create a container while exposing a port and keep it running in the background.
 (-d Detached mode: run the container in the background and print the new container ID.)
 (-t allocates a pseudo-TTY to keep the container running while in the background.)
-podman run -p internal_port:external_port -d -t image_name
-podman run -p 2110:2110 -d -t localhost/inspect_2110
+podman run --name name_of_container -d -t -p internal_port:external_port  image_name
+podman run --name inspect_2110 -d -t -p 2110:2110 localhost/inspect_2110
 
 # Stop container.
 podman stop [CONTAINER_NAME|CONTAINER_ID]
 
 # Delete a container.
 podman rm [CONTAINER_NAME|CONTAINER_ID]
+
+# Remove all unused containers, pods and folumes from local storage.
+podman system prune
 
 # Generage systemd service file.
 podman generate systemd --name foo

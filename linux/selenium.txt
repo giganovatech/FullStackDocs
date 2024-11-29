@@ -1,0 +1,13 @@
+# First and foremost, we have to ensure that our Selenium version, chromedriver version and Chrome version are compatible. You can find the compatibility information on the Downloads page of ChromeDriver individually for each releases.
+
+# Check selenium version.
+python -c "import selenium; print(selenium.__version__)"
+ -or-
+ pip show selenium
+
+
+# Check chromedriver version.
+
+
+# Check Chrome version.
+google-chrome --version

@@ -95,7 +95,13 @@ https://linux.die.net/man/1/snmpcmd
 ####################################################################################################
 General usage
 ####################################################################################################
+How To Use the Net-SNMP Tool Suite To Manage and Monitor Servers:
 https://www.digitalocean.com/community/tutorials/how-to-use-the-net-snmp-tool-suite-to-manage-and-monitor-servers
+How To Install and Configure an SNMP Daemon and Client on Ubuntu 14.04:
+https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-an-snmp-daemon-and-client-on-ubuntu-14-04
+How To Use the Net-SNMP Tool Suite To Manage and Monitor Servers:
+https://www.digitalocean.com/community/tutorials/how-to-use-the-net-snmp-tool-suite-to-manage-and-monitor-servers
+
 
 #install net-snmp tools:
 yum install net-snmp-utils net-snmp-devel net-snmp
@@ -175,6 +181,14 @@ tail -n 100000 /var/log/snmptrapd.log > ~/snmptrapdlog.txt
 SET UP TRAP HANDLER
 ####################################################################################################
 
+# View net-snmp configurations. DO NOT EDIT THESE FILES.
+/var/lib/net-snmp/snmpd.conf
+/var/lib/net-snmp/snmptrapd.conf
+
+# Contain snmp user configurations.
+/etc/snmp/snmptrapd.conf
+
+
 #don't think this part is actually necessary but did it anyways:
 systemctl stop snmpd.service
 net-snmp-create-v3-user -ro -A test123authPass -a SHA -X test123encPass -x AES user1
@@ -183,11 +197,13 @@ systemctl start snmpd.service
 
 #edit /etc/sysconfig/snmptrapd file by adding this line and then restart the daemon and service:
 OPTIONS="-Lsd -Lf /var/log/snmptrapd.log"
+-or-
+OPTIONS="-Lsd -p /var/run/snmptrapd.pid -c /etc/snmp/snmptrapd.conf"
 systemctl daemon-reload
 systemctl restart snmptrapd.service
 
 
-#add this line to /etc/snmp/snmptrap.conf:
+#add this line to /etc/snmp/snmptrapd.conf:
 disableAuthorization yes
 
 
@@ -195,3 +211,159 @@ disableAuthorization yes
 tail -f /var/log/snmptrapd.log
 
 ####################################################################################################
+HOW TO USE MIB FILES WITH SNMP
+####################################################################################################
+
+First, copy your .mib file into the directory where you want them located, here is a common location:
+/usr/share/snmp/mibs
+
+Then use snmpget in the following format:
+snmpget [address] -c [community string] -v 1 -m [mib name] [object to scan]
+snmpget -v2c -r1 -t3 -c public 10.18.12.12 -m /usr/share/snmp/mibs/SA_Europe_Messages_SMIv2.mib msgOldestNumber
+
+Then use snmpwalk in the following format:
+snmpwalk [address] -c [community string] -v 1 -m [mib name] [object to scan]
+snmpwalk -v2c -r1 -t3 -c dcmpublic -Cc -Cp -Ct -On 10.18.12.12 1.3.6.1.4.1.1482.20.1.2.1.4.1
+
+
+systemctl daemon-reload
+service snmptrapd start
+service snmptrapd stop
+service snmptrapd status
+
+
+/usr/lib/systemd/system/snmpd.service
+/usr/lib/systemd/system/snmptrapd.service
+
+
+/etc/snmp/snmpd.conf
+/etc/snmp/snmptrapd.conf
+rocommunity  fwPIoMqQ4pSvGs8
+
+tail -f /var/log/snmptrapd.log
+
+
+All of these give this error: snmptrap: Failure in sendto (Permission denied)
+snmptrap -v 2c -c fwPIoMqQ4pSvGs8 10.14.27.255 '' .1.3.6.1.4.1.8072.2.3.0.1
+snmptrap -v2c -c fwPIoMqQ4pSvGs8 10.14.27.255 UCD-NOTIFICATION-TEST-MIB::demoNotif SNMPv2-MIB::sysLocation.0 s "Just here"
+snmptrap -v2c -r1 -t3 -c fwPIoMqQ4pSvGs8 10.14.27.255 SNMPv2-MIB::snmpTrapOID 1.3.6.1.4.1 s "What am I doing here?"
+snmptrap -v2c -c fwPIoMqQ4pSvGs8 10.14.27.255 '' SNMPv2-MIB::coldStart SNMPv2-MIB::sysName.0 s "MyDevice"
+snmptrap -v 1 -c fwPIoMqQ4pSvGs8 10.14.27.255 UCD-TRAP-TEST-MIB::demotraps "" 6 17 "" SNMPv2-MIB::sysLocation.0 s "Just here"
+snmptrap -v 2c -c fwPIoMqQ4pSvGs8 10.14.27.255 "" SNMPv2-MIB::sysLocation.0 s "Just here"
+snmptrap -v2c -r1 -t3 -c fwPIoMqQ4pSvGs8 10.14.27.255 "" SNMPv2-MIB::snmpTrapOID 1.3.6.1.4.1.12345.2.1.0 s "What am I doing here?"
+
+
+this works:
+snmpget -v2c -r1 -t3 -c fwPIoMqQ4pSvGs8 localhost .1.3.6.1.4.1
+snmpget -v2c -r1 -t3 -c fwPIoMqQ4pSvGs8 localhost .1.3.6.1.2.1
+snmpget -v2c -r1 -t3 -c fwPIoMqQ4pSvGs8 localhost .1.3.6.1.2.1.25.1.1
+snmpget -v2c -r1 -t3 -c fwPIoMqQ4pSvGs8 10.14.27.25 .1.3.6.1.4.1
+snmpget -v2c -r1 -t3 -c fwPIoMqQ4pSvGs8 10.14.27.25 .1.3.6.1.2.1
+snmpget -v2c -r1 -t3 -c fwPIoMqQ4pSvGs8 10.14.27.25 .1.3.6.1.2.1.25.1.1
+
+this does not (snmpget: Failure in sendto (Permission denied)):
+snmpget -v2c -r1 -t3 -c fwPIoMqQ4pSvGs8 10.14.27.255 .1.3.6.1.4.1
+snmpget -v2c -r1 -t3 -c fwPIoMqQ4pSvGs8 10.14.27.255 .1.3.6.1.2.1
+snmpget -v2c -r1 -t3 -c fwPIoMqQ4pSvGs8 10.14.27.255 .1.3.6.1.2.1.25.1.1
+
+
+
+cat /etc/snmp/snmptrapd.conf
+ authCommunity   log,execute,net public
+traphandle default /etc/snmp/mydummyhandler.sh
+
+
+
+configure /etc/snmp/snmptrapd.conf
+
+
+agentAddress udp:58001
+
+
+sudo iptables -L -v -n
+
+
+
+# Install the Necessary Packages.
+sudo apt-get update
+sudo apt-get install snmp snmptrapd
+
+# Configure the SNMP Trap Daemon (snmptrapd).
+sudo nano /etc/snmp/snmptrapd.conf
+
+# Add the following lines to the configuration file:
+authCommunity log,execute,net public
+logOption f /var/log/snmptrapd.log
+??? outputOption -Lf /var/log/snmptrapd.log
+
+# Configure Logging.
+sudo touch /var/log/snmptrapd.log
+sudo chmod 644 /var/log/snmptrapd.log
+
+# Add a firewall rule to accept incoming traps on port 162.
+sudo iptables -A INPUT -p udp --dport 162 -j ACCEPT
+
+# Verify firewall settings.
+sudo iptables -L -v -n
+
+# Save the iptables rules so they persist across reboots.
+sudo apt-get install iptables-persistent
+sudo service iptables save -or- sudo netfilter-persistent save
+
+# Start and Enable the SNMP Trap Daemon.
+sudo service snmptrapd start
+sudo service snmptrapd enable
+
+# Verify the SNMP Trap Receiver is Running.
+sudo service snmptrapd status
+
+# Test the SNMP Trap Receiver.
+snmptrap -v 2c -c public localhost "" 1.3.6.1.4.1.8072.2.3.0.1
+snmptrap -v 2c -c public localhost '' NET-SNMP-EXAMPLES-MIB::netSnmpExampleHeartbeatNotification netSnmpExampleHeartbeatRate i 123456
+snmptrap -v 2c -c public localhost '' .1.3.6.1.4.1.8072.2.3.0.1 .1.3.6.1.2.1.1.1.0 s "test"
+snmptrap -v 2c -c public localhost '' .1.3.6.1.4.1.8072.2.3.0.1 .1.3.6.1.2.1 s 'SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.2.12198 = INTEGER: 12198 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.3.12198 = STRING: "DCM"       SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.4.12198 = STRING: "UDP Stream Loss"   SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.5.12198 = STRING: "Board 3, Port 1, TS 239.232.104.26:1234"      SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.6.12198 = STRING: "2024/05/23 17:49:32"       SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.7.12198 = INTEGER: 2     SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.8.12198 = INTEGER: 1  SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.9.12198 = Gauge32: 8  SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.10.12198 = Gauge32: 226 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.11.12198 = Hex-STRING: 01      SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.12.12198 = INTEGER: 0 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.13.12198 = INTEGER: 2 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.14.12198 = STRING: "TS=239.232.104.26:1234=;Source IP=10.24.181.119=;"   SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.15.12198 = OID: SNMPv2-SMI::mib-2.47.1.1.1.1.1.301'
+
+# Monitor
+tail -f /var/log/snmptrapd.log
+
+
+---For Troubleshooting---
+# Run snmptrapd manually from the foreground.
+sudo snmptrapd -f -Lo
+
+# Run snmptrapd manually in the background and direct output to log file.
+sudo snmptrapd -Lf /var/log/snmptrapd.log --disableAuthorization=yes
+sudo /usr/sbin/snmptrapd -c /etc/snmp/snmptrapd.conf
+
+# Check what processes are using specific ports.
+sudo netstat -nlp
+
+# This is the snmptrapd service is firing off snmptrapd, need to figure out why logging is not working...
+└─5841 /usr/sbin/snmptrapd -LOw -f -p /run/snmptrapd.pid
+
+
+outputOption -s -O n -Lf /var/log/snmptrapd.log
+
+
+ExecStart=/usr/sbin/snmptrapd $OPTIONS -f
+ExecStart=/usr/sbin/snmptrapd -c /etc/snmp/snmptrapd.conf
+
+
+
+sudo nano /usr/lib/systemd/system/snmptrapd.service
+
+
+
+Cannot rename /var/lib/net-snmp/snmpapp.conf to /var/lib/net-snmp/snmpapp.0.conf
+Cannot unlink /var/lib/net-snmp/snmpapp.conf
+
+traphandle default /usr/sbin/snmptrapd-handler.py
+
+
+snmptrap -v 2c -c public localhost '' .1.3.6.1.4.1.8072.2.3.0.1 .1.3.6.1.2.1 s "Test Trap"
+
+snmptrap -v 2c -c public localhost '' .1.3.6.1.4.1.8072.2.3.0.1 .1.3.6.1.2.1 s 'DISMAN-EVENT-MIB::sysUpTimeInstance = Timeticks: (1596722993) 184 days, 19:20:29.93     SNMPv2-MIB::snmpTrapOID.0 = OID: SNMPv2-SMI::enterprises.1482.20.1.1.1.1.0.1    SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.2.12277 = INTEGER: 12277 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.3.12277 = STRING: "DCM"       SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.4.12277 = STRING: "UDP Stream Loss"   SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.5.12277 = STRING: "Board 3, Port 1, TS 239.232.146.94:1234"      SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.6.12277 = STRING: "2024/05/23 20:44:57"       SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.7.12277 = INTEGER: 2     SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.8.12277 = INTEGER: 1  SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.9.12277 = Gauge32: 8  SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.10.12277 = Gauge32: 226 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.11.12277 = Hex-STRING: 01      SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.12.12277 = INTEGER: 0 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.13.12277 = INTEGER: 2 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.14.12277 = STRING: "TS=239.232.146.94:1234=;Source IP=10.24.181.150=;"   SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.15.12277 = OID: SNMPv2-SMI::mib-2.47.1.1.1.1.1.301'
+
+
+
+snmptrap -v 2c -c public localhost '' .1.3.6.1.4.1.8072.2.3.0.1 .1.3.6.1.2.1 s  '<UNKNOWN> UDP: [10.18.12.12]:44018->[10.14.26.114]:162 DISMAN-EVENT-MIB::sysUpTimeInstance 189:15:33:37.87 SNMPv2-MIB::snmpTrapOID.0 SNMPv2-SMI::enterprises.1482.20.1.1.1.1.0.1 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.2.13507 13507 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.3.13507 \"DCM\" SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.4.13507 \"Dejitter Buffer Reset\" SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.5.13507 \"Board 3, Port 1, TS 239.232.104.41:1234\" SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.6.13507 \"2024/05/28 16:58:04\" SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.7.13507 0 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.8.13507 2 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.9.13507 24 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.10.13507 513 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.11.13507 \"01 \" SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.12.13507 1 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.13.13507 2 SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.14.13507 \"TS=239.232.104.41:1234=;Source IP=10.24.181.119=;\" SNMPv2-SMI::enterprises.1482.20.1.2.1.4.1.15.13507 SNMPv2-SMI::mib-2.47.1.1.1.1.1.301'

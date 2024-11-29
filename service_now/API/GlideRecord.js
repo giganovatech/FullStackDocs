@@ -47,7 +47,7 @@ gr.query(); // Execute the query
 
 // While the recordset contains records, iterate through them
 while (gr.next())
-{ 
+{
     //Do something with the records returned
     if (gr.category == 'software')
     {

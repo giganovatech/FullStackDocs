@@ -1,0 +1,5 @@
+# One time, create grep alias.
+PS) new-alias grep findstr
+
+# Actual grep command to use thereafter.
+PS) ls -r *.txt | cat | grep "some random string"

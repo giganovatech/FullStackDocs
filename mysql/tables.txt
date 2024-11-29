@@ -1,36 +1,36 @@
-#displays tables in a database
-SHOW TABLES
+# Displays tables in a database.
+SHOW TABLES;
 
-#displays table structure
-DESCRIBE table_name
+# Displays table structure.
+DESCRIBE table_name;
 
-#create database
-create database DBname
+# Create database.
+create database DBname;
 
-#create table
+# Create table.
 CREATE TABLE table_name (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, column_name1 CHAR(30) NOT NULL, column_name2 JSON DEFAULT NULL);
 CREATE TABLE table_name (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `created` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updated` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), column_name1 CHAR(30) NOT NULL, column_name2 JSON DEFAULT NULL);
 
-#displays query that would be used to create your existing table from scratch
-SHOW CREATE TABLE table_name
+# Displays query that would be used to create your existing table from scratch.
+SHOW CREATE TABLE table_name;
 
-#empty table
-TRUNCATE TABLE table_name
+# Empty table. Deletes and recreates the table.
+TRUNCATE TABLE table_name;
 
-/*create a backup of a database table
-#creates new table using the exact same structure as another table
-CREATE TABLE new_table LIKE original_table
-#inserts all of the data from the original table into the backup
-INSERT new_table SELECT * FROM original_table
+/* Create a backup of a database table.
+# Creates new table using the exact same structure as the original table.
+CREATE TABLE new_table LIKE original_table;
+# Inserts all of the data from the original table into the backup.
+INSERT new_table SELECT * FROM original_table;
 */
 
-#delete an existing table
-DROP TABLE table_name
+# Delete an existing table.
+DROP TABLE table_name;
 
-#change a table's name
-RENAME TABLE first TO second
+# Change a table's name.
+RENAME TABLE first TO second;
 
-#add a column to a table after another specific column
+# Add a column to a table after another specific column.
 ALTER TABLE table_name ADD column_name1 CHAR(60) AFTER column_name2
 
 #change an table's existing column's structure

@@ -1,0 +1,3 @@
+# Allows you to grab the current value of a component such as a Select or Input component and set a corresponding client state parameter to this value for example.
+@payload.value
+
