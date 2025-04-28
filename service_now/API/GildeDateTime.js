@@ -10,6 +10,8 @@ gs.info("Current datetime: " + gdt);
 // Output: Current datetime: 2022-08-08 16:51:44
 
 
+// Add days to datetime.
+var tomorrow_datetime = gdt.addDays(1);
 
 
 // Get the current date only.
