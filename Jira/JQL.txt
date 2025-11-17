@@ -1,4 +1,4 @@
-# Get all tickets I've closed.
-status CHANGED TO Done BY currentUser()
+# Get all tickets current user has moved to done.
+status CHANGED TO Done BY currentUser() ORDER BY updated DESC
 
 
