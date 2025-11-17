@@ -1,6 +1,4 @@
-status changed BY cu6271
-project = DBSLIVE AND resolution = Unresolved ORDER BY priority DESC, updated DESC
-assignee = currentUser() AND resolution = Unresolved order by updated DESC
-created >= -1d and project = "Black Hole Sun" order by created DESC
-statusCategory = Done and assignee = currentUser() order by updated DESC
-status = Done AND assignee = currentUser() ORDER BY updated DESC
+# Get all tickets I've closed.
+status CHANGED TO Done BY currentUser()
+
+
