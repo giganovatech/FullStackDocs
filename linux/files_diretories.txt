@@ -33,3 +33,6 @@ find ./ -type f -print0|xargs -0 chmod 776
 #combined
 find ./ -type d -print0 |xargs -0 chmod 775
 find ./ -type f -print0|xargs -0 chmod 776
+
+# Get size of folder or file on disk
+du -sh /var/log/snmptrapd.log

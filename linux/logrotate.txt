@@ -1,0 +1,36 @@
+https://betterstack.com/community/guides/logging/how-to-manage-log-files-with-logrotate-on-ubuntu-20-04/
+https://www.baeldung.com/linux/rotating-logs-logrotate
+
+# Check logrotate is on the system and its version.
+logrotate --version
+
+# Main config file. Typically not necessary to edit.
+/etc/logrotate.conf
+
+# Folder where config files for individual programs are stored.
+/etc/logrotate.d
+ex: cat /etc/logrotate.d/snmptraphandler
+
+# System cron job run once per day. This command calls: logrotate /etc/logrotate.conf
+/etc/cron.daily/logrotate
+
+# Run logrotate using a specific config file.
+logrotate [OPTION...] <config file1> <config file2>...
+ex: logrotate /etc/logrotate.d/snmptraphandler
+
+# Force rotation (even if not necessary)
+logrotate -f /etc/logrotate.d/snmptraphandler
+
+# Check last time logrotate was run on a specific config file.
+cat /var/lib/logrotate/status
+cat /var/lib/logrotate/logrotate.status  # Red Hat
+ex: cat /var/lib/logrotate/logrotate.status | grep snmptraphandler
+
+# Sample individual config file.
+/var/log/snmptraphandler.log {
+    daily
+    rotate 7
+    create
+    missingok
+}
+
